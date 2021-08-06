@@ -5,10 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.*;
 import org.xjcraft.misc.XJCraftMisc;
 
 import java.util.HashSet;
@@ -86,10 +83,10 @@ public class DenyAnyCommandListener implements Listener {
     }
 
     /**
-     * 下线删除解锁状态
+     * 重新上线删除解锁状态
      */
     @EventHandler
-    public void onPlayerExit(PlayerQuitEvent event) {
+    public void onPlayerExit(PlayerJoinEvent event) {
         this.lock(event.getPlayer());
     }
 

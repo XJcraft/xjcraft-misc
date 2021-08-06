@@ -1,0 +1,12 @@
+# 禁止一切指令执行
+deny-any-command:
+  enable: true
+  # 是否同时禁止编辑 CB
+  lock-cb: true
+  # 解锁密码
+  unlock-password: 123456
+  # 允许的指令白名单
+  white-list:
+    - list
+    - tps
+    - skin

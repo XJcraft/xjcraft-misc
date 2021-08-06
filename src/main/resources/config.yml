@@ -1,6 +1,6 @@
 # 禁止一切指令执行
 deny-any-command:
-  enable: true
+  enable: false
   # 是否同时禁止编辑 CB
   lock-cb: true
   # 解锁密码

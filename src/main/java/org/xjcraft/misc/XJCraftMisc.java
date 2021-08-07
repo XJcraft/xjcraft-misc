@@ -6,6 +6,8 @@ import org.xjcraft.misc.listeners.DenyAnyCommandListener;
 public class XJCraftMisc extends JavaPlugin {
     @Override
     public void onEnable() {
+        this.saveDefaultConfig();
+
         var pluginManager = this.getServer().getPluginManager();
         var config = this.getConfig();
 

@@ -68,6 +68,8 @@ public class DenyAnyCommandListener implements Listener {
         if (params[0].equals("unlock")) {
             if (params[1].equals(this.unlockPassword)) {
                 this.unlock(player);
+                player.sendMessage("解锁成功.");
+                event.setCancelled(true);
                 return;
             }
         }

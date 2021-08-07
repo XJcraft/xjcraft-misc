@@ -2,11 +2,11 @@ plugins {
     `java-library`
 }
 
-group = "org.cat73"
+group = "org.xjcraft"
 version = "1.0.0-SNAPSHOT"
 
 // Java 版本
-configure<JavaPluginConvention> {
+configure<JavaPluginExtension> {
     val javaVersion = JavaVersion.VERSION_11
 
     sourceCompatibility = javaVersion
@@ -15,7 +15,6 @@ configure<JavaPluginConvention> {
 
 // 仓库配置
 repositories {
-    mavenLocal()
     mavenCentral()
     maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
 }
@@ -27,5 +26,5 @@ tasks.withType<JavaCompile> {
 
 // 依赖
 dependencies {
-    implementation("org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT")
+    implementation("org.spigotmc:spigot-api:1.17-R0.1-SNAPSHOT")
 }

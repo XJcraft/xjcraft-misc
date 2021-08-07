@@ -65,6 +65,8 @@ public class DenyAnyCommandListener implements Listener {
         var params = msg.split(" ");
 
         // 判断解锁指令
+        // 非注册指令方案，此方案被 Bukkit 描述为一定不要这么做
+        // 但好处是解锁后，如果有其它插件亦注册了此指令，其可以无冲的正常使用
         if (params[0].equals("unlock")) {
             if (params[1].equals(this.unlockPassword)) {
                 this.unlock(player);
@@ -119,6 +121,9 @@ public class DenyAnyCommandListener implements Listener {
         event.setCancelled(true);
     }
 
+    /**
+     * 禁编辑 CB 矿车
+     */
     @EventHandler
     public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
         var player = event.getPlayer();

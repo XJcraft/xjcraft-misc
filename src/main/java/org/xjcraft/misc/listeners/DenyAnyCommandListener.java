@@ -106,7 +106,8 @@ public class DenyAnyCommandListener implements Listener {
             return;
         }
         // 是 CB
-        if (!event.getClickedBlock().getType().name().contains("COMMAND")) {
+        var block = event.getClickedBlock();
+        if (block == null || !block.getType().name().contains("COMMAND")) {
             return;
         }
 

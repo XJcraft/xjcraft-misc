@@ -1,19 +1,33 @@
 package org.xjcraft.misc;
 
+import lombok.Getter;
+import lombok.experimental.Accessors;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.xjcraft.misc.listeners.DenyAnyCommandListener;
+import org.xjcraft.misc.feature.denyanycommand.DenyAnyCommand;
+import org.xjcraft.misc.feature.tpsconfigure.TpsConfigure;
 
 public class XJCraftMisc extends JavaPlugin {
+    @Getter
+    @Accessors(fluent = true)
+    private static XJCraftMisc plugin;
+
+    public XJCraftMisc() {
+        XJCraftMisc.plugin = this;
+    }
+
     @Override
     public void onEnable() {
         this.saveDefaultConfig();
 
-        var pluginManager = this.getServer().getPluginManager();
         var config = this.getConfig();
 
         // 禁止一切命令执行
         if (config.getBoolean("deny-any-command.enable")) {
-            pluginManager.registerEvents(new DenyAnyCommandListener(this), this);
+            DenyAnyCommand.enable();
+        }
+        // 根据 TPS 自动调整配置
+        if (config.getBoolean("tps-configure.enable")) {
+            TpsConfigure.enable();
         }
     }
 }

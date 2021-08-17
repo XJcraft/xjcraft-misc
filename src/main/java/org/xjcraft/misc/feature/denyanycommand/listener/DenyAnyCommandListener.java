@@ -1,4 +1,4 @@
-package org.xjcraft.misc.listeners;
+package org.xjcraft.misc.feature.denyanycommand.listener;
 
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -12,14 +12,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-/**
- * 禁止一切命令执行的 Listener
- * <p>无视 OP 权限，对所有玩家一视同仁</p>
- * <p>有一个绕过机制，输入密码可绕过此限制，当前 Session 下有效</p>
- * <p>有一个白名单机制，运行特定命令被绕过</p>
- *
- * @author Cat73
- */
 public class DenyAnyCommandListener implements Listener {
     private final boolean lockCB;
     /**

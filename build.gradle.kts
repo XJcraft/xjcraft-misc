@@ -26,5 +26,7 @@ tasks.withType<JavaCompile> {
 
 // 依赖
 dependencies {
+    annotationProcessor("org.projectlombok:lombok:1.18.20")
+    compileOnly("org.projectlombok:lombok:1.18.20")
     implementation("org.spigotmc:spigot-api:1.17-R0.1-SNAPSHOT")
 }

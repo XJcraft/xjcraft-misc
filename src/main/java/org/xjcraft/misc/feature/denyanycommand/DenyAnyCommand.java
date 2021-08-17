@@ -7,7 +7,7 @@ import org.xjcraft.misc.feature.denyanycommand.listener.DenyAnyCommandListener;
  * 禁止一切命令执行
  * <p>无视 OP 权限，对所有玩家一视同仁</p>
  * <p>有一个绕过机制，输入密码可绕过此限制，当前 Session 下有效</p>
- * <p>有一个白名单机制，运行特定命令被绕过</p>
+ * <p>有一个白名单机制，允许特定命令被绕过</p>
  *
  * @author Cat73
  */

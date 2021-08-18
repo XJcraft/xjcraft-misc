@@ -72,7 +72,7 @@ public class TpsConfigure {
         // 注册定时器
         plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, instance::tickLoop, 0, period);
         // 注册事件
-        pluginManager.registerEvents(new EntitySpawnListener(instance), plugin);
+//        pluginManager.registerEvents(new EntitySpawnListener(instance), plugin);
     }
 
     /**

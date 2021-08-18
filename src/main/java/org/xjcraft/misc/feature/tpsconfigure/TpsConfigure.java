@@ -1,9 +1,9 @@
 package org.xjcraft.misc.feature.tpsconfigure;
 
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.xjcraft.misc.XJCraftMisc;
 import org.xjcraft.misc.feature.tpsconfigure.beans.RateConf;
-import org.xjcraft.misc.feature.tpsconfigure.listener.EntitySpawnListener;
 
 import java.util.Comparator;
 import java.util.List;
@@ -33,10 +33,11 @@ public class TpsConfigure {
      */
     @Getter
     private volatile RateConf nowRate;
+    private volatile double nowTps = 20.0;
     /**
      * now tps(考虑最大增量后的)
      */
-    private volatile double tps = 20.0;
+    private volatile double usedTps = 20.0;
     /**
      * 上次执行时间
      */
@@ -87,15 +88,15 @@ public class TpsConfigure {
         }
         var time = nowTime - this.lastTime;
         this.lastTime = nowTime;
-        var nowTps = Math.min(1000 / ((double) time / (double) this.split), 20.0);
+        this.nowTps = Math.min(1000 / ((double) time / (double) this.split), 20.0);
 
         // 计算最新的用于控制的 TPS
-        if (nowTps <= this.tps) {
-            this.tps = nowTps;
+        if (this.nowTps <= this.usedTps) {
+            this.usedTps = this.nowTps;
         } else {
-            var inc = nowTps - this.tps;
+            var inc = this.nowTps - this.usedTps;
             inc = Math.min(inc, this.maxUp);
-            this.tps = this.tps + inc;
+            this.usedTps = this.usedTps + inc;
         }
 
         // 刷新配置
@@ -109,10 +110,13 @@ public class TpsConfigure {
         // 找到使用的配置
         RateConf usedRate = this.rates.get(this.rates.size() - 1);
         for (var rate : this.rates) {
-            if (rate.getMinTps() <= this.tps) {
+            if (rate.getMinTps() <= this.usedTps) {
                 usedRate = rate;
                 break;
             }
+        }
+        if (this.nowRate != usedRate) {
+            Bukkit.getConsoleSender().sendMessage(String.format("nowTps: %.2f, usedTps: %.2f, usedRate: %.2f, rateTps: %.2f", this.nowTps, this.usedTps, usedRate.getRate(), usedRate.getMinTps()));
         }
         this.nowRate = usedRate;
 

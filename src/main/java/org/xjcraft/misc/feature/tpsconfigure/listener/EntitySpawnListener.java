@@ -4,13 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntitySpawnEvent;
-import org.xjcraft.misc.feature.tpsconfigure.TpsConfigure;
+import org.xjcraft.misc.feature.tpsconfigure.TPSConfigure;
 
 import java.util.concurrent.ThreadLocalRandom;
 
 @RequiredArgsConstructor
 public class EntitySpawnListener  implements Listener {
-    private final TpsConfigure baseFeature;
+    private final TPSConfigure baseFeature;
 
     @EventHandler
     public void onEntitySpawn(EntitySpawnEvent event) {

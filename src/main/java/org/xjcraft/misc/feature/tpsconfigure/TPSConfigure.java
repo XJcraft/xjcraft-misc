@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
  *
  * @author Cat73
  */
-public class TpsConfigure {
+public class TPSConfigure {
     /**
      * 检测间隔
      */
@@ -43,7 +43,7 @@ public class TpsConfigure {
      */
     private volatile long lastTime = -1;
 
-    public TpsConfigure(int split, double maxUp, List<RateConf> rates) {
+    public TPSConfigure(int split, double maxUp, List<RateConf> rates) {
         this.split = split;
         this.maxUp = maxUp;
         this.rates = rates;
@@ -77,7 +77,7 @@ public class TpsConfigure {
         }
 
         // 构建实例
-        var instance = new TpsConfigure(period, maxUp, rates);
+        var instance = new TPSConfigure(period, maxUp, rates);
 
         // 注册定时器
         plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, instance::tickLoop, 0, period);

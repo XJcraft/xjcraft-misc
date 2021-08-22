@@ -2,7 +2,10 @@ package org.xjcraft.misc.feature.tpsconfigure;
 
 import lombok.Getter;
 import org.bukkit.Bukkit;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.xjcraft.misc.XJCraftMisc;
+import org.xjcraft.misc.feature.tps.event.TPSEvent;
 import org.xjcraft.misc.feature.tpsconfigure.beans.RateConf;
 
 import java.util.Comparator;
@@ -15,11 +18,7 @@ import java.util.stream.Collectors;
  *
  * @author Cat73
  */
-public class TPSConfigure {
-    /**
-     * 检测间隔
-     */
-    private final int split;
+public class TPSConfigure implements Listener {
     /**
      * 最大单次增量
      */
@@ -32,19 +31,17 @@ public class TPSConfigure {
      * 当前使用的配置
      */
     @Getter
-    private volatile RateConf nowRate;
-    private volatile double nowTps = 20.0;
+    private RateConf nowRate;
     /**
      * now tps(考虑最大增量后的)
      */
-    private volatile double usedTps = 20.0;
+    private double usedTps = 20.0;
     /**
-     * 上次执行时间
+     * 当前 TPS
      */
-    private volatile long lastTime = -1;
+    private double nowTps = 20.0;
 
-    public TPSConfigure(int split, double maxUp, List<RateConf> rates) {
-        this.split = split;
+    public TPSConfigure(double maxUp, List<RateConf> rates) {
         this.maxUp = maxUp;
         this.rates = rates;
         this.nowRate = this.rates.get(0);
@@ -63,7 +60,6 @@ public class TPSConfigure {
         var config = plugin.getConfig();
 
         // 读取配置
-        var period = config.getInt("tps-configure.split");
         var maxUp = config.getDouble("tps-configure.max-up");
 
         var ratesRaw = Objects.requireNonNull(config.getConfigurationSection("tps-configure.rates")).getValues(false);
@@ -77,27 +73,19 @@ public class TPSConfigure {
         }
 
         // 构建实例
-        var instance = new TPSConfigure(period, maxUp, rates);
+        var instance = new TPSConfigure(maxUp, rates);
 
-        // 注册定时器
-        plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, instance::tickLoop, 0, period);
         // 注册事件
+        pluginManager.registerEvents(instance, plugin); // TODO bad code
 //        pluginManager.registerEvents(new EntitySpawnListener(instance), plugin);
     }
 
     /**
      * 按配置的 tick period 执行的 loop
      */
-    public void tickLoop() {
-        // 计算最新的 TPS
-        var nowTime = System.currentTimeMillis();
-        if (this.lastTime < 0) {
-            this.lastTime = nowTime;
-            return;
-        }
-        var time = nowTime - this.lastTime;
-        this.lastTime = nowTime;
-        this.nowTps = Math.min(1000 / ((double) time / (double) this.split), 20.0);
+    @EventHandler
+    public void onTpsChange(TPSEvent event) {
+        this.nowTps = event.getTps();
 
         // 计算最新的用于控制的 TPS
         if (this.nowTps <= this.usedTps) {

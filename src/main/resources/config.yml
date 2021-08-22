@@ -12,6 +12,7 @@ deny-any-command:
     - skin
 
 # 根据 TPS 调整配置
+# 每 100tick 调整一次
 tps-configure:
   enable: false
   # 限制比例(>= TPS: 各项参数控制比例)
@@ -38,7 +39,5 @@ tps-configure:
     2: 3
     1: 2
     0: 1
-  # 控制间隔(Tick)，实际可能较此值稍稍落后
-  split: 100
   # 内部用于控制的 TPS 最大单次回升量
   max-up: 0.8

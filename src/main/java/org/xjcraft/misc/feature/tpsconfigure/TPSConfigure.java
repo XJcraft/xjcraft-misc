@@ -5,6 +5,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.xjcraft.misc.XJCraftMisc;
+import org.xjcraft.misc.feature.AFeature;
 import org.xjcraft.misc.feature.tps.event.TPSEvent;
 import org.xjcraft.misc.feature.tpsconfigure.beans.RateConf;
 
@@ -15,18 +16,22 @@ import java.util.stream.Collectors;
 
 /**
  * 根据 TPS 自动调整配置
- *
  * @author Cat73
  */
-public class TPSConfigure implements Listener {
+public class TPSConfigure extends AFeature implements Listener {
+    // ==== 配置 ====
+
     /**
      * 最大单次增量
      */
-    private final double maxUp;
+    private double maxUp;
     /**
      * 配置的调整比例
      */
-    private final List<RateConf> rates;
+    private List<RateConf> rates;
+
+    // ==== 当前状态 ====
+
     /**
      * 当前使用的配置
      */
@@ -41,12 +46,6 @@ public class TPSConfigure implements Listener {
      */
     private double nowTps = 20.0;
 
-    public TPSConfigure(double maxUp, List<RateConf> rates) {
-        this.maxUp = maxUp;
-        this.rates = rates;
-        this.nowRate = this.rates.get(0);
-    }
-
     private static String fixX(String input) {
         return input.replace("x", ".");
     }
@@ -54,7 +53,7 @@ public class TPSConfigure implements Listener {
     /**
      * 启用功能
      */
-    public static void enable() {
+    public void enable() {
         var plugin = XJCraftMisc.plugin();
         var pluginManager = plugin.getServer().getPluginManager();
         var config = plugin.getConfig();
@@ -72,11 +71,13 @@ public class TPSConfigure implements Listener {
             throw new RuntimeException("未配置 TPSConfigure 中的 rates，请检查");
         }
 
-        // 构建实例
-        var instance = new TPSConfigure(maxUp, rates);
+        // 保存配置
+        this.maxUp = maxUp;
+        this.rates = rates;
+        this.nowRate = this.rates.get(0);
 
         // 注册事件
-        pluginManager.registerEvents(instance, plugin); // TODO bad code
+        pluginManager.registerEvents(this, plugin); // TODO bad code
 //        pluginManager.registerEvents(new EntitySpawnListener(instance), plugin);
     }
 

@@ -7,6 +7,7 @@ import org.xjcraft.misc.util.Refs;
 
 /**
  * 限制配置
+ * @author Cat73
  */
 @Value
 public class RateConf {

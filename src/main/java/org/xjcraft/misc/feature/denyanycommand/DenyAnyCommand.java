@@ -1,6 +1,7 @@
 package org.xjcraft.misc.feature.denyanycommand;
 
 import org.xjcraft.misc.XJCraftMisc;
+import org.xjcraft.misc.feature.AFeature;
 import org.xjcraft.misc.feature.denyanycommand.listener.DenyAnyCommandListener;
 
 /**
@@ -11,11 +12,11 @@ import org.xjcraft.misc.feature.denyanycommand.listener.DenyAnyCommandListener;
  *
  * @author Cat73
  */
-public class DenyAnyCommand {
+public class DenyAnyCommand extends AFeature {
     /**
      * 启用功能
      */
-    public static void enable() {
+    public void enable() {
         var plugin = XJCraftMisc.plugin();
         var pluginManager = plugin.getServer().getPluginManager();
 

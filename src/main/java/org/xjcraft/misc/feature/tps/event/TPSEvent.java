@@ -7,6 +7,7 @@ import org.bukkit.event.HandlerList;
 
 /**
  * TPS 更新事件
+ * @author Cat73
  */
 @Value
 @EqualsAndHashCode(callSuper = true)

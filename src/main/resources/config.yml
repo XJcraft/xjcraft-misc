@@ -15,8 +15,9 @@ deny-any-command:
 tps-configure:
   enable: false
   # 限制比例(>= TPS: 各项参数控制比例)
+  # 注意：请用 x 代替 .，例如 19.5 写为 19x5
   rates:
-    19.5: 100
+    19x5: 100
     19: 90
     18: 80
     17: 70

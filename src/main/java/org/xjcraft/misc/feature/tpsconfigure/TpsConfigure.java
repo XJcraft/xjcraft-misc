@@ -50,6 +50,10 @@ public class TpsConfigure {
         this.nowRate = this.rates.get(0);
     }
 
+    private static String fixX(String input) {
+        return input.replace("x", ".");
+    }
+
     /**
      * 启用功能
      */
@@ -60,12 +64,17 @@ public class TpsConfigure {
 
         // 读取配置
         var period = config.getInt("tps-configure.split");
-        var maxUp = config.getInt("tps-configure.max-up");
+        var maxUp = config.getDouble("tps-configure.max-up");
+
         var ratesRaw = Objects.requireNonNull(config.getConfigurationSection("tps-configure.rates")).getValues(false);
         var rates = ratesRaw.entrySet().stream()
-                .map(e -> new RateConf(Double.parseDouble(e.getKey()), (Double.parseDouble(String.valueOf(e.getValue())) / 100.0)))
+                .map(e -> new RateConf(Double.parseDouble(fixX(e.getKey())), (Double.parseDouble(String.valueOf(e.getValue())) / 100.0)))
                 .sorted(Comparator.comparing(RateConf::getMinTps).reversed())
                 .collect(Collectors.toList());
+
+        if (rates.size() == 0) {
+            throw new RuntimeException("未配置 TPSConfigure 中的 rates，请检查");
+        }
 
         // 构建实例
         var instance = new TpsConfigure(period, maxUp, rates);
@@ -117,10 +126,11 @@ public class TpsConfigure {
         }
         if (this.nowRate != usedRate) {
             Bukkit.getConsoleSender().sendMessage(String.format("nowTps: %.2f, usedTps: %.2f, usedRate: %.2f, rateTps: %.2f", this.nowTps, this.usedTps, usedRate.getRate(), usedRate.getMinTps()));
-        }
-        this.nowRate = usedRate;
 
-        // 应用配置
-        usedRate.apply();
+            this.nowRate = usedRate;
+
+            // 应用配置
+            usedRate.apply();
+        }
     }
 }

@@ -8,6 +8,7 @@ import org.xjcraft.misc.feature.tps.event.TPSEvent;
 
 /**
  * 计算 TPS
+ *
  * @author Cat73
  */
 public class TPS extends AFeature {
@@ -20,11 +21,15 @@ public class TPS extends AFeature {
      * 上次执行时间
      */
     private long lastTime = System.currentTimeMillis() - 1;
+    /**
+     * 检查间隔
+     */
+    private final int checkRate = 1000;
 
     public void enable() {
         var plugin = XJCraftMisc.plugin();
 
-        plugin.getServer().getScheduler().runTaskTimer(plugin, this::tickLoop, 1, 100);
+        plugin.getServer().getScheduler().runTaskTimer(plugin, this::tickLoop, 1, checkRate);
     }
 
     /**
@@ -35,7 +40,7 @@ public class TPS extends AFeature {
         var nowTime = System.currentTimeMillis();
         var time = nowTime - this.lastTime;
         this.lastTime = nowTime;
-        var tps = 1000.0 / ((double) time / 100.0);
+        var tps = 1000.0d * checkRate / time;
         this.tps = tps;
 
         Bukkit.getPluginManager().callEvent(new TPSEvent(tps, Math.min(tps, 20.0)));
